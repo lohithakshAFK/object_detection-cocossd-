@@ -1,5 +1,6 @@
 img = ""
 portal = ""
+object = [];
 
 function preload(){
       img = loadImage("dog_cat.jpg");
@@ -20,16 +21,20 @@ function loaded(){
 
 function draw(){
     image(img,0,0,640,420);
-    fill("red");
-    noFill();
-    stroke("red");
-    text("Dog",35,75)
-    rect(30,60,350,350)
-    fill("red");
-    stroke("red")
-    noFill();
-    text("Cat",305,75);
-    rect(300,50,300,350);
+    if(portal != ""){
+        for (i=0; i<object.length; i++){
+            document.getElementById("status").innerHTML = "Status : Detected";
+            fill("red");
+            stroke("red")
+            noFill()
+            percent = floor(object[i].confidence * 100);
+            text(object[i].label +  "  " + percent + "%", object[i].x + 10, object[i].y + 20);
+            rect(object[i].x, object[i].y, object[i].width, object[i].height);
+            
+            
+        }
+    }
+    
 }
 
 function gotResults(error,results){
@@ -37,6 +42,7 @@ function gotResults(error,results){
         console.log(error);
     }
     else{
-        console.log(results);
+        console.log(results); 
+        object = results;  
     }
 }
